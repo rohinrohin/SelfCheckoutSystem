@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-
 import {
   View,
   Text,
@@ -13,6 +12,26 @@ import Camera from 'react-native-camera'
 import {Card, ListItem, Button} from 'react-native-elements'
 
 export default class AddCartFromCamera extends Component {
+  getProductDetails (e) {
+    var queryStr = 'SELECT * FROM PRODUCTS WHERE P_ID=' + this.state.barCodeValue
+    console.log(fetch('http://rohin.me:3000/interface', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({query: queryStr})
+    }).then((response) => response.json()).then((responseJson) => {
+      return responseJson.rows
+    }).catch((error) => {
+      console.error(error)
+    }))
+  }
+
+  testing () {
+    console.log(this.state.barCodeValue)
+  }
+
   constructor (props) {
     super(props)
     this.state = {
@@ -48,7 +67,7 @@ export default class AddCartFromCamera extends Component {
               fontFamily: 'Lato',
               fontWeight: '200'
             }}
-            onPress={this.props.callback}
+            onPress={this.getProductDetails}
             raised
             backgroundColor='transparent'
             color='black'

@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, StatusBar} from 'react-native';
-import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React, {Component} from 'react'
+import {View, Text, StyleSheet, Image, StatusBar} from 'react-native'
+import ActionButton from 'react-native-action-button'
+import Icon from 'react-native-vector-icons/Ionicons'
 import CartListContainer from '../components/CartListContainer'
 
 export default class Cart extends Component {
-  callme() {
-    console.log("Hello");
+  callme () {
+    console.log('Hello')
   }
-  render() {
+  render () {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#1976D2" barStyle="light-content"/>
@@ -25,7 +25,7 @@ export default class Cart extends Component {
           </ActionButton.Item>
         </ActionButton>
       </View>
-    );
+    )
   }
 }
 
