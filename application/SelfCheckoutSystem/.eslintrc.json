@@ -1,0 +1,11 @@
+{
+    "ecmaFeatures": {
+        "jsx": true
+    },
+    "extends": "standard",
+    "plugins": [
+        "standard",
+        "promise"
+    ],
+    "no-unused-vars": 0
+}

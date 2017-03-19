@@ -1,0 +1,38 @@
+{
+  "name": "SelfCheckoutSystem",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "native-base": "^2.0.12",
+    "pg": "^6.1.4",
+    "react": "~15.4.1",
+    "react-native": "0.42.0",
+    "react-native-action-button": "^2.6.4",
+    "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
+    "react-native-clean-project": "^1.0.4",
+    "react-native-elements": "^0.10.0",
+    "react-native-fit-image": "^1.4.7",
+    "react-native-material-design": "^0.3.7",
+    "react-native-material-kit": "^0.4.1",
+    "react-native-sglistview": "^0.3.10",
+    "react-native-vector-icons": "^4.0.0",
+    "react-navigation": "^1.0.0-beta.7"
+  },
+  "devDependencies": {
+    "babel-jest": "19.0.0",
+    "babel-preset-react-native": "1.9.1",
+    "eslint": "^3.18.0",
+    "eslint-config-standard": "^7.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^2.1.1",
+    "jest": "19.0.2",
+    "react-test-renderer": "~15.4.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
