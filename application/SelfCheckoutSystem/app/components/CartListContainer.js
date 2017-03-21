@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {
   View,
   Text,
@@ -6,14 +6,27 @@ import {
   Image,
   StatusBar,
   ScrollView
-} from 'react-native';
-import {StackNavigator} from 'react-navigation';
-import Camera from 'react-native-camera';
-import {Button} from 'react-native-elements';
+} from 'react-native'
+import {StackNavigator} from 'react-navigation'
+import Camera from 'react-native-camera'
+import {Button} from 'react-native-elements'
 import CartItemCard from '../components/CartItemCard'
 
 export default class CartListContainer extends Component {
-  render() {
+  constructor (props) {
+    super(props)
+    this.state = {
+      test: 1
+    }
+    this.updateState = this.updateState.bind(this)
+  }
+  updateState (test) {
+    this.setState({
+      test: test
+    })
+  }
+  render () {
+    console.log(this.state.test)
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#1976D2" barStyle="light-content"/>
@@ -49,4 +62,4 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 40
   }
-});
+})

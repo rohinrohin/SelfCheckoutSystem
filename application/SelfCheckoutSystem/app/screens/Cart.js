@@ -12,12 +12,12 @@ export default class Cart extends Component {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#1976D2" barStyle="light-content"/>
-        <CartListContainer callback={this.callme}/>
+        <CartListContainer callback={this.callme} ref="cartListContainer"/>
         <ActionButton buttonColor="rgba(231,76,60,1)">
           <ActionButton.Item
             buttonColor='#9b59b6'
             title="Add Item"
-            onPress={() => this.props.navigation.navigate('AddCartFromCamera')}>
+            onPress={() => this.props.navigation.navigate('AddCartFromCamera', {pad: () => this.refs.cartListContainer})}>
             <Icon name="md-create" style={styles.actionButtonIcon}/>
           </ActionButton.Item>
           <ActionButton.Item buttonColor='#1abc9c' title="Checkout" onPress={() => {}}>
