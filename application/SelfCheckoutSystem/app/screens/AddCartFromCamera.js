@@ -14,20 +14,26 @@ import {Card, ListItem, Button} from 'react-native-elements'
 export default class AddCartFromCamera extends Component {
   getProductDetails (e) {
     // this.props.navigation.params.par.updateState(5)
-    console.log(this.props.navigation.state.params.pad(5))
-    // var queryStr = 'SELECT * FROM PRODUCTS WHERE P_ID=' + this.state.barCodeValue
-    // console.log(fetch('http://rohin.me:3000/interface', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({query: queryStr})
-    // }).then((response) => response.json()).then((responseJson) => {
-    //   return responseJson.rows
-    // }).catch((error) => {
-    //   console.error(error)
-    // }))
+    // console.log(this.props.navigation.state.params.pad(5))
+    var queryStr = "SELECT * FROM PRODUCTS WHERE P_ID='" + this.state.barCodeValue + "';"
+    console.log(queryStr)
+    console.log(fetch('http://rohin.me:3000/interface', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({query: queryStr})
+    }).then((response) => response.json()).then((responseJson) => {
+      if (responseJson.rowCount === 0) {
+        alert('No matching products found.')
+        return
+      }
+      this.setState({productInfo: responseJson.rows[0]})
+      // alert(responseJson.rows[0])
+    }).catch((error) => {
+      console.error(error)
+    }))
   }
 
   testing () {
@@ -38,18 +44,23 @@ export default class AddCartFromCamera extends Component {
     super(props)
     this.state = {
       barCodeValue: false,
-      isInfoLoaded: false
+      productInfo: false
     }
-    this.getProductDetails = this.getProductDetails.bind(this)
+    this.getProductDetails = this
+      .getProductDetails
+      .bind(this)
+    this.barCodeValue = this
+      .barcodeHandler
+      .bind(this)
   }
   barcodeHandler (e) {
-    if (!this.state.barCodeValue) {
-      this.setState({isInfoLoaded: true})
+    if (e.data !== this.state.barCodeValue || !this.state.barCodeValue) {
       this.setState({barCodeValue: e.data})
+      this.getProductDetails()
     }
   }
   productViewHandler () {
-    if (this.state.barCodeValue) {
+    if (this.state.productInfo) {
       return (
         <View>
           <Text
@@ -57,13 +68,13 @@ export default class AddCartFromCamera extends Component {
               fontSize: 18,
               textAlign: 'center',
               fontWeight: '300'
-            }}>MRP: ₹20, DISCOUNT: ₹20</Text>
+            }}>MRP: {this.state.productInfo.price}, DISCOUNT: ₹{this.state.productInfo.discount}</Text>
           <Text
             style={{
               fontSize: 18,
               textAlign: 'center',
               fontWeight: '500'
-            }}>PRICE: ₹20</Text>
+            }}>PRICE: ₹{this.state.productInfo.price - this.state.productInfo.discount}</Text>
           <Button
             textStyle={{
               fontSize: 15,
@@ -92,8 +103,8 @@ export default class AddCartFromCamera extends Component {
               marginLeft: 25,
               marginRight: 25
             }}
-            title={this.state.barCodeValue
-            ? 'SURF EXCEL(' + this.state.barCodeValue + ')'
+            title={this.state.productInfo
+            ? this.state.productInfo.p_name + '(' + this.state.barCodeValue + ')'
             : null}
             titleStyle={{
               fontSize: 20,
@@ -101,8 +112,8 @@ export default class AddCartFromCamera extends Component {
               textAlign: 'center',
               fontWeight: 'bold'
             }}
-            image={this.state.barCodeValue
-            ? require('../img/surf.jpg')
+            image={this.state.productInfo
+            ? {uri: 'http://' + this.state.productInfo.p_url}
             : null}>
             {this.productViewHandler()}
           </Card>
