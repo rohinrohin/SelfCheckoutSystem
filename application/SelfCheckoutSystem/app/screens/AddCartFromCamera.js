@@ -12,6 +12,34 @@ import Camera from 'react-native-camera'
 import {Card, ListItem, Button} from 'react-native-elements'
 
 export default class AddCartFromCamera extends Component {
+  addProductToCart(e) {
+    console.log(this.props.navigation.state.params.userID)
+    var orderID = this.props.navigation.state.params.orderID
+    var userID = this.props.navigation.state.params.userID
+    var queryStr = "INSERT INTO ORDER_DETAILS VALUES ('" + orderID +"','" + userID + "','" +this.state.barCodeValue+ "', 1, " + this.state.productInfo.price +");"
+    console.log(queryStr)
+    console.log(fetch('http://rohin.me:3000/interface', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({query: queryStr})
+    }).then((response) => response.json()).then((responseJson) => {
+      if (responseJson.rowCount === 0) {
+        alert('Unable to add product.')
+        return
+      }
+      alert('Added succesfully.')
+      this.props.navigation.state.params.cartFetchHandler()
+      this.props.navigation.goBack()
+      // this.setState({productInfo: responseJson.rows[0]})
+      // alert(responseJson.rows[0])
+    }).catch((error) => {
+      console.error(error)
+    }))
+
+  }
   getProductDetails (e) {
     // this.props.navigation.params.par.updateState(5)
     // console.log(this.props.navigation.state.params.pad(5))
@@ -49,12 +77,30 @@ export default class AddCartFromCamera extends Component {
     this.getProductDetails = this
       .getProductDetails
       .bind(this)
-    this.barCodeValue = this
+    this.barcodeHandler = this
       .barcodeHandler
+      .bind(this)
+    this.addProductToCart = this
+      .addProductToCart
       .bind(this)
   }
   barcodeHandler (e) {
     if (e.data !== this.state.barCodeValue || !this.state.barCodeValue) {
+      var Sound = require('react-native-sound')
+      var beep = new Sound('beep.mp3', Sound.MAIN_BUNDLE, (error) => {
+        if (error) {
+          console.log('failed to load the sound', error)
+          return
+        }
+        beep.play((success) => {
+          if (success) {
+            console.log('successfully finished playing')
+          } else {
+            console.log('playback failed due to audio decoding errors')
+          }
+        })
+        console.log('duration in seconds: ' + beep.getDuration() + 'number of channels: ' + beep.getNumberOfChannels())
+      })
       this.setState({barCodeValue: e.data})
       this.getProductDetails()
     }
@@ -81,7 +127,7 @@ export default class AddCartFromCamera extends Component {
               fontFamily: 'Lato',
               fontWeight: '200'
             }}
-            onPress={this.getProductDetails}
+            onPress={this.addProductToCart}
             raised
             backgroundColor='transparent'
             color='black'

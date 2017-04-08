@@ -16,14 +16,32 @@ export default class CartListContainer extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      test: 1
+      test: 1, 
+      orderDetails: this.props.orderDetails
     }
     this.updateState = this.updateState.bind(this)
+    this.CardItemListHandler = this.CardItemListHandler.bind(this)
   }
   updateState (test) {
     this.setState({
       test: test
     })
+  }
+  componentDidMount() {
+    this.CardItemListHandler()
+  }
+  CardItemListHandler() {
+    console.log("CartItemListHandler Called. " + this.props.orderDetails)
+    if (this.props.orderDetails) {
+      console.log("rendering cartlistitem handler")
+      console.log(this.props)
+      var obj = this.props.orderDetails.map((order, i) => {
+        return (
+        <CartItemCard cartFetchHander={this.props.cartFetchHander} key={i} orderDetails={order}/>
+        )
+      })
+      return obj
+    }
   }
   render () {
     console.log(this.state.test)
@@ -33,11 +51,8 @@ export default class CartListContainer extends Component {
         <ScrollView style={{
           flex: 1
         }}>
-          <CartItemCard itemName='Surf Excel' callback={this.props.callback}/>
-          <CartItemCard itemName='Surf Excel'/>
-          <CartItemCard itemName='Surf Excel'/>
-          <CartItemCard itemName='Surf Excel'/>
-          <CartItemCard itemName='Surf Excel'/>
+          {/*<CartItemCard itemName='Surf Excel' callback={this.props.callback}/>*/}
+          {this.CardItemListHandler()}
         </ScrollView>
       </View>
     )

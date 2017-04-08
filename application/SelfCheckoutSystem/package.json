@@ -19,7 +19,8 @@
     "react-native-material-design": "^0.3.7",
     "react-native-material-kit": "^0.4.1",
     "react-native-sglistview": "^0.3.10",
-    "react-native-vector-icons": "^4.0.0",
+    "react-native-sound": "^0.9.1",
+    "react-native-vector-icons": "^4.0.1",
     "react-navigation": "^1.0.0-beta.7"
   },
   "devDependencies": {
