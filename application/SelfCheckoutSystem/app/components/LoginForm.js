@@ -22,10 +22,14 @@ const ColoredRaisedButton = MKButton.flatButton()
   .build()
 
 export default class LoginForm extends Component {
+  constructor(props) {
+    super(props)
+    this.checkAuthInformation = this.checkAuthInformation.bind(this)
+  }
   checkAuthInformation (e) {
     // this.props.navigation.params.par.updateState(5)
     // console.log(this.props.navigation.state.params.pad(5))
-      var queryStr = "SELECT * FROM PRODUCTS WHERE P_ID='" + this.state.barCodeValue + "';"
+      var queryStr = "SELECT * FROM LOGIN WHERE U_ID='" + this.refs.emailInput._lastNativeText + "' AND PASSWORD='" +this.refs.passwordInput._lastNativeText+ "';"
       console.log(queryStr)
       console.log(fetch('http://rohin.me:3000/interface', {
       method: 'POST',
@@ -36,10 +40,12 @@ export default class LoginForm extends Component {
       body: JSON.stringify({query: queryStr})
     }).then((response) => response.json()).then((responseJson) => {
       if (responseJson.rowCount === 0) {
-        alert('No matching products found.')
+        alert('Wrong username/password.')
         return
       }
-      this.setState({productInfo: responseJson.rows[0]})
+      this.props.navigation.navigate('Tabs', {
+            userID: this.refs.emailInput._lastNativeText,
+          })
       // alert(responseJson.rows[0])
     }).catch((error) => {
       console.error(error)
@@ -65,10 +71,13 @@ export default class LoginForm extends Component {
         />
         <ColoredRaisedButton
           onPress={() => {
-            console.log(this.refs.emailInput._lastNativeText)
-            console.log(this.refs.passwordInput._lastNativeText)
-
-            this.props.navigation.navigate('Tabs')
+            {/*alert(this.refs.emailInput._lastNativeText)
+            alert(this.refs.passwordInput._lastNativeText)*/}
+            {/*this.setState({
+              userID: this.refs.emailInput._lastNativeText, 
+              password: this.refs.passwordInput._lastNativeText
+            })*/}
+            this.checkAuthInformation()
           }}
         />
       </View>

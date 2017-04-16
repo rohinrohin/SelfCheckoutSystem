@@ -44,6 +44,13 @@ export default class CartListContainer extends Component {
         )
       })
       return obj
+    } else {
+      return(
+        <View style={{flex: 1, height: 100, alignItems: 'center', justifyContent: 'center', backgroundColor: '#2196F3'}}>
+          <Text style={styles.title}> Cart Empty
+            </Text>
+          </View>
+      )
     }
   }
   render () {
@@ -63,6 +70,14 @@ export default class CartListContainer extends Component {
 }
 
 const styles = StyleSheet.create({
+    title: {
+    textAlign: 'center',
+    padding: 20, 
+    fontFamily: 'Montserrat',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#000'
+  },
   container: {
     flex: 1,
     flexDirection: 'column'

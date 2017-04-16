@@ -5,10 +5,11 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import CartListContainer from '../components/CartListContainer'
 
 export default class Cart extends Component {
-  cartFetchHandler() {
-    if (!this.state.isFetching) {
-      console.log("called inside")
-      var queryStr = "SELECT * FROM ORDERS WHERE U_ID='" + this.state.userID + "' AND ORDER_STATUS='cart';"
+  handleNoOrderID() {
+    if (!this.state.isHandlingNoOrderID) {
+      this.state.isHandlingNoOrderID = true
+      var randomID = Math.floor(Math.random() * 1000);
+      var queryStr = "INSERT INTO ORDERS(ORDER_ID,ORDER_STATUS,U_ID,ORDER_DATE) VALUES('" + randomID + "','CART','" + this.state.userID + "','2017-04-12');"
       console.log(queryStr)
       console.log(fetch('http://rohin.me:3000/interface', {
         method: 'POST',
@@ -19,8 +20,37 @@ export default class Cart extends Component {
         body: JSON.stringify({query: queryStr})
       }).then((response) => response.json()).then((responseJson) => {
         if (responseJson.rowCount === 0) {
-          alert('No orders found. ')
-          return
+          alert('Unable to create new cart. ')
+          return this.handleNoOrderID()
+        }
+        this.setState({
+          isHandlingNoOrderID: false
+        })
+        return this.cartFetchHandler()
+        // this.setState({productInfo: responseJson.rows[0]})
+        // alert(responseJson.rows[0])
+      }).catch((error) => {
+        console.error(error)
+      }))
+    }
+    
+  }
+  cartFetchHandler() {
+    if (!this.state.isFetching) {
+      console.log("called inside")
+      var queryStr = "SELECT * FROM ORDERS WHERE U_ID='" + this.state.userID + "' AND ORDER_STATUS='CART';"
+      console.log(queryStr)
+      console.log(fetch('http://rohin.me:3000/interface', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({query: queryStr})
+      }).then((response) => response.json()).then((responseJson) => {
+        if (responseJson.rowCount === 0) {
+          // alert("No orderID found. ")
+          return this.handleNoOrderID()
         }
 
         console.log("ORDER ID: " + responseJson.rows[0].order_id)
@@ -29,7 +59,7 @@ export default class Cart extends Component {
         })
 
         // ORDER ID AVAILABLE ->
-        var queryStr = "SELECT P.P_ID,P_NAME,P_URL,PRICE,P_QTY,ORDER_ID FROM PRODUCTS P,ORDER_DETAILS O WHERE P.P_ID = O.P_ID AND ORDER_ID = '" + this.state.orderID +"';"
+        var queryStr = "SELECT P.P_ID,P_NAME,P_URL,PRICE,P_QTY,ORDER_ID,DISCOUNT FROM PRODUCTS P,ORDER_DETAILS O WHERE P.P_ID = O.P_ID AND ORDER_ID = '" + this.state.orderID +"';"
         console.log(queryStr)
         console.log(fetch('http://rohin.me:3000/interface', {
           method: 'POST',
@@ -40,7 +70,7 @@ export default class Cart extends Component {
           body: JSON.stringify({query: queryStr})
         }).then((response) => response.json()).then((responseJson) => {
           if (responseJson.rowCount === 0) {
-            alert('Order fetch failed. ')
+            // alert('Add products to cart to continue.')
             // this.state.isFetching = false
             return
           }
@@ -73,12 +103,13 @@ export default class Cart extends Component {
     this.state = {
       isFetching: false, 
       orderID: null,
+      isHandlingNoOrderID: false,
       // orderDetails: [
       //   {"p_name": "hello"}, 
       //   {"p_name": "test"}
       // ],
       orderDetails: false,
-      userID: 'mkelley0'
+      userID: this.props.navigation.state.params.userID
     }
     this.cartFetchHandler = this.cartFetchHandler.bind(this)
   }
@@ -105,10 +136,21 @@ export default class Cart extends Component {
             buttonColor='#1abc9c' 
             title="Checkout" 
             onPress={() => this.props.navigation.navigate('Checkout', {
-            orderDetails: this.state.orderDetails,
+            orderID: this.state.orderID,
             userID: this.state.userID,
+            cartFetchHandler: this.cartFetchHandler
           })}>
             <Icon name="md-done-all" style={styles.actionButtonIcon}/>
+          </ActionButton.Item>
+          <ActionButton.Item
+            buttonColor='#2196F3'
+            title="Transaction History"
+            onPress={() => this.props.navigation.navigate('TransactionHistory', {
+            orderID: this.state.orderID,
+            userID: this.state.userID,
+            cartFetchHandler: this.cartFetchHandler
+          })}>
+            <Icon name="ios-archive-outline" style={styles.actionButtonIcon}/>
           </ActionButton.Item>
         </ActionButton>
       </View>

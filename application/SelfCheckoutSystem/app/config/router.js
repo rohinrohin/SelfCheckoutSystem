@@ -6,6 +6,7 @@ import Cart from '../screens/Cart'
 import AddCartFromCamera from '../screens/AddCartFromCamera'
 import LoginForm from '../components/LoginForm'
 import Checkout from '../screens/Checkout'
+import TransactionHistory from '../screens/TransactionHistory'
 
 export const CartHandler = StackNavigator({
   Cart: {
@@ -16,6 +17,9 @@ export const CartHandler = StackNavigator({
   },
   Checkout: {
     screen: Checkout
+  }, 
+  TransactionHistory: {
+    screen: TransactionHistory
   }
 }, {
   mode: 'modal',
@@ -28,23 +32,6 @@ export const Tabs = TabNavigator({
     navigationOptions: {
       tabBar: {
         label: 'Cart'
-      }
-    }
-  },
-  Login: {
-    screen: LoginForm,
-    navigationOptions: {
-      tabBar: {
-        label: 'Add'
-      }
-    }
-  },
-  Cart3: {
-    // Temporary Testing
-    screen: Cart,
-    navigationOptions: {
-      tabBar: {
-        label: 'Settings'
       }
     }
   }

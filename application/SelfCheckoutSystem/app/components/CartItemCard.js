@@ -148,8 +148,8 @@ export default class CartItemCard extends Component{
               color='black'
               icon={{name: 'cached', color: 'black'}}
               title={'QTY:' + this.props.orderDetails.p_qty} />
-            <Text style={styles.price}>ITEM: ₹{this.props.orderDetails.price}</Text>
-            <Text style={styles.total}>PRICE: ₹{this.props.orderDetails.p_qty * this.props.orderDetails.price}</Text>
+            <Text style={styles.price}>PRICE: ₹{this.props.orderDetails.price}</Text>
+            <Text style={styles.total}>TOT: ₹{this.props.orderDetails.p_qty * this.props.orderDetails.price*(1-(this.props.orderDetails.discount/100))}</Text>
           </View>
            {this.quantityViewHandler()}
         </View>

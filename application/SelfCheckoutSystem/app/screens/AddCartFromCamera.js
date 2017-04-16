@@ -114,13 +114,13 @@ export default class AddCartFromCamera extends Component {
               fontSize: 18,
               textAlign: 'center',
               fontWeight: '300'
-            }}>MRP: {this.state.productInfo.price}, DISCOUNT: ₹{this.state.productInfo.discount}</Text>
+            }}>MRP: {this.state.productInfo.price}, DISCOUNT: ₹{this.state.productInfo.price*this.state.productInfo.discount/100}</Text>
           <Text
             style={{
               fontSize: 18,
               textAlign: 'center',
               fontWeight: '500'
-            }}>PRICE: ₹{this.state.productInfo.price - this.state.productInfo.discount}</Text>
+            }}>PRICE: ₹{this.state.productInfo.price *(1- (this.state.productInfo.discount/100))}</Text>
           <Button
             textStyle={{
               fontSize: 15,
