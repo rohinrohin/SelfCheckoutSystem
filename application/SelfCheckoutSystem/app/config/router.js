@@ -5,6 +5,7 @@ import Login from '../screens/Login'
 import Cart from '../screens/Cart'
 import AddCartFromCamera from '../screens/AddCartFromCamera'
 import LoginForm from '../components/LoginForm'
+import Checkout from '../screens/Checkout'
 
 export const CartHandler = StackNavigator({
   Cart: {
@@ -12,6 +13,9 @@ export const CartHandler = StackNavigator({
   },
   AddCartFromCamera: {
     screen: AddCartFromCamera
+  },
+  Checkout: {
+    screen: Checkout
   }
 }, {
   mode: 'modal',

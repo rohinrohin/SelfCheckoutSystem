@@ -35,9 +35,12 @@ export default class CartListContainer extends Component {
     if (this.props.orderDetails) {
       console.log("rendering cartlistitem handler")
       console.log(this.props)
+      const _this = this
       var obj = this.props.orderDetails.map((order, i) => {
+        console.log("INSIDE MAP FUNCTION: ")
+        console.log(this.props)
         return (
-        <CartItemCard cartFetchHander={this.props.cartFetchHander} key={i} orderDetails={order}/>
+        <CartItemCard cartFetchHandler={this.props.cartFetchHandler} key={i} orderDetails={order}/>
         )
       })
       return obj

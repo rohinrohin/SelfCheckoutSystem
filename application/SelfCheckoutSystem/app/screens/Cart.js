@@ -101,7 +101,13 @@ export default class Cart extends Component {
           })}>
             <Icon name="md-create" style={styles.actionButtonIcon}/>
           </ActionButton.Item>
-          <ActionButton.Item buttonColor='#1abc9c' title="Checkout" onPress={() => {}}>
+          <ActionButton.Item 
+            buttonColor='#1abc9c' 
+            title="Checkout" 
+            onPress={() => this.props.navigation.navigate('Checkout', {
+            orderDetails: this.state.orderDetails,
+            userID: this.state.userID,
+          })}>
             <Icon name="md-done-all" style={styles.actionButtonIcon}/>
           </ActionButton.Item>
         </ActionButton>
